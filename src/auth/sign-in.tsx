@@ -1,7 +1,10 @@
-import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import { FormEvent } from 'react';
+
 import { Alert, Button, Card, Checkbox, Form, Input, Typography } from 'antd';
 import { AxiosError } from 'axios';
 
+import Lock from '../assets/icons/lock.svg?react';
+import Mail from '../assets/icons/mail.svg?react';
 import { ISignInForm } from './core/_models';
 import useSignIn from './core/hooks/use-sign-in';
 
@@ -12,20 +15,18 @@ function SignIn() {
   const errorMessage = error instanceof AxiosError ? error?.response?.data?.message : '';
 
   const onFinish = (values: ISignInForm) => {
-    // console.log(values);
     mutate(values);
   };
 
-  // const handleForgotPassword = (e: FormEvent) => {
-  //   e.preventDefault();
-  // console.log('Handle password recovery logic here');
-  // };
+  const handleForgotPassword = (e: FormEvent) => {
+    e.preventDefault();
+  };
 
   return (
     <div className='flex justify-center items-center h-lvh bg-slate-100'>
-      <Card style={{ width: 500 }} className='shadow-lg'>
+      <Card style={{ width: 500 }} className='shadow-lg py-10'>
         <div className='flex justify-center'>
-          <Title level={2}>Admin Login</Title>
+          <Title level={1}>Admin Login</Title>
         </div>
         {isError && errorMessage && <Alert className='w-max' type='error' message={errorMessage} closable />}
         <br />
@@ -43,7 +44,13 @@ function SignIn() {
               },
             ]}
           >
-            <Input prefix={<MailOutlined />} type='email' placeholder='Email Address' />
+            <Input
+              className='py-2'
+              prefix={<Mail />}
+              type='email'
+              style={{ fontSize: '1rem' }}
+              placeholder='Email Address'
+            />
           </Form.Item>
           <Form.Item
             name='password'
@@ -54,20 +61,28 @@ function SignIn() {
               },
             ]}
           >
-            <Input.Password prefix={<LockOutlined />} type='password' placeholder='Password' />
+            <Input.Password
+              className='py-2'
+              prefix={<Lock />}
+              type='password'
+              style={{ fontSize: '1rem' }}
+              placeholder='Password'
+            />
           </Form.Item>
-          {/* <a style={{ float: 'right' }} href='' onClick={handleForgotPassword}>
-            Forgot password
-          </a> */}
-          <Form.Item>
-            <Form.Item name='remember' valuePropName='checked' noStyle>
-              <Checkbox>Remember me</Checkbox>
+          <div className='flex justify-between'>
+            <Form.Item>
+              <Form.Item name='remember' valuePropName='checked' noStyle>
+                <Checkbox className='text-lg'>Remember me</Checkbox>
+              </Form.Item>
             </Form.Item>
-          </Form.Item>
+            <Button type='text' className='text-lg flex justify-center items-center' onClick={handleForgotPassword}>
+              Forgot password
+            </Button>
+          </div>
           <Form.Item>
             <Button
               loading={isLoading || isLoadingVerifyToken}
-              className='bg-blue-600 text-white'
+              className='bg-blue-600 text-white py-6 flex text-lg font-semibold justify-center items-center'
               type='primary'
               htmlType='submit'
               block

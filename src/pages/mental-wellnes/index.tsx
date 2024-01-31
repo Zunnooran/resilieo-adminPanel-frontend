@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { PlusOutlined } from '@ant-design/icons';
+import PlusOutlined from '@ant-design/icons';
 import { theme } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 
@@ -15,7 +15,7 @@ function Plan() {
   } = theme.useToken();
   const { masterPlanData, isLoadingMasterPlan } = useMasterPlans();
   const modifiedDataSourceMaster = useMemo(() => {
-    if (masterPlanData?.length) return masterPlanData[0]?.plans?.map((plan) => ({ ...plan }));
+    if (masterPlanData?.length) return masterPlanData[0]?.plans?.map((plan: any) => ({ ...plan }));
     return [];
   }, [masterPlanData]);
   return (
