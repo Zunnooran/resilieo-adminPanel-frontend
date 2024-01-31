@@ -1,10 +1,5 @@
-
 function PersonalityTest() {
-  return (
-    <div>
-      personality test
-    </div>
-  )
+  return <div>personality test</div>;
 }
 
 export default PersonalityTest;

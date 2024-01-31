@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { LogoutOutlined } from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 
 import Guidance from 'assets/icons/guid-icon.svg?react';
 import Mental from 'assets/icons/mental-icon.svg?react';
 import Test from 'assets/icons/test-icon.svg?react';
-import { LogoutOutlined } from '@ant-design/icons';
 
 interface Props {
   collapsed: boolean;
@@ -42,11 +42,11 @@ function Sidebar({ collapsed, setCollapsed }: Props) {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (pathname.slice('/'.length)) return setCurrent(pathname.slice('/'.length));
+    if (pathname.slice('/'.length)) setCurrent(pathname.slice('/'.length));
     setCurrent('guidance');
-  }, []);
+  }, [pathname]);
 
-  const onClick: MenuProps['onClick'] = (e) => {
+  const onClick = (e: any) => {
     setCurrent(e.key);
     navigate(e.key === 'guidance' ? '/' : `/${e.key}`);
   };

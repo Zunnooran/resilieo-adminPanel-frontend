@@ -46,4 +46,4 @@ export interface IChangePasswordForm {
   phoneNumber: number | string;
 }
 
-export type IUserModelResponse = Response<IUserModel>
+export type IUserModelResponse = Response<IUserModel>;

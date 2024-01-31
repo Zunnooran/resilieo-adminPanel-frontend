@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext, useContext, useState } from 'react';
+import React, { ReactNode, createContext, useContext, useMemo, useState } from 'react';
 
 import { ConfigProvider as AntdConfigProvider, theme } from 'antd';
 
@@ -13,18 +13,19 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+export function ThemeProvider({ children }: ThemeProviderProps) {
   const { defaultAlgorithm, darkAlgorithm } = theme;
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const toggleTheme = () => {
-    setIsDarkMode((prev) => !prev);
-  };
-
-  const contextValue = {
-    isDarkMode,
-    toggleTheme,
-  };
+  const contextValue = useMemo(() => {
+    function toggleTheme() {
+      setIsDarkMode((prev) => !prev);
+    }
+    return {
+      isDarkMode,
+      toggleTheme,
+    };
+  }, [isDarkMode]);
 
   return (
     <ThemeContext.Provider value={contextValue}>
@@ -37,7 +38,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       </AntdConfigProvider>
     </ThemeContext.Provider>
   );
-};
+}
 
 export const useTheme = () => {
   const context = useContext(ThemeContext);

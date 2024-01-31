@@ -12,7 +12,6 @@ import WithSuspense from './with-suspense';
 
 function AppRoutes() {
   const { currentUser } = useAuth();
-  console.log(currentUser);
 
   const router = createBrowserRouter(
     createRoutesFromElements(

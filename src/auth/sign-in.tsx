@@ -1,5 +1,3 @@
-import { FC, FormEvent } from 'react';
-
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Alert, Button, Card, Checkbox, Form, Input, Typography } from 'antd';
 import { AxiosError } from 'axios';
@@ -9,19 +7,19 @@ import useSignIn from './core/hooks/use-sign-in';
 
 const { Title } = Typography;
 
-const SignIn: FC = () => {
+function SignIn() {
   const { error, isError, isLoading, isLoadingVerifyToken, mutate } = useSignIn();
   const errorMessage = error instanceof AxiosError ? error?.response?.data?.message : '';
 
   const onFinish = (values: ISignInForm) => {
-    console.log(values);
+    // console.log(values);
     mutate(values);
   };
 
-  const handleForgotPassword = (e: FormEvent) => {
-    e.preventDefault();
-    console.log('Handle password recovery logic here');
-  };
+  // const handleForgotPassword = (e: FormEvent) => {
+  //   e.preventDefault();
+  // console.log('Handle password recovery logic here');
+  // };
 
   return (
     <div className='flex justify-center items-center h-lvh bg-slate-100'>
@@ -58,9 +56,9 @@ const SignIn: FC = () => {
           >
             <Input.Password prefix={<LockOutlined />} type='password' placeholder='Password' />
           </Form.Item>
-          <a style={{ float: 'right' }} href='' onClick={handleForgotPassword}>
+          {/* <a style={{ float: 'right' }} href='' onClick={handleForgotPassword}>
             Forgot password
-          </a>
+          </a> */}
           <Form.Item>
             <Form.Item name='remember' valuePropName='checked' noStyle>
               <Checkbox>Remember me</Checkbox>
@@ -81,6 +79,6 @@ const SignIn: FC = () => {
       </Card>
     </div>
   );
-};
+}
 
 export default SignIn;

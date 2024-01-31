@@ -14,19 +14,17 @@ import Sidebar from './sider';
 function Layout() {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   return (
-    <>
+    <LayoutAnt>
+      <ScrollToTop />
+      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
       <LayoutAnt>
-        <ScrollToTop />
-        <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-        <LayoutAnt>
-          <Header />
-          <WithSuspense>
-            <Outlet />
-          </WithSuspense>
-          <Footer />
-        </LayoutAnt>
+        <Header />
+        <WithSuspense>
+          <Outlet />
+        </WithSuspense>
+        <Footer />
       </LayoutAnt>
-    </>
+    </LayoutAnt>
   );
 }
 
