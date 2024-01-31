@@ -20,10 +20,22 @@ interface WeeklyPlan {
   location: string;
 }
 
+export interface IFeelingCreate {
+  name: string;
+  explanatoryVideo: string[];
+  goodToKnow: string;
+  signOf: string[];
+  shadeOf: string[];
+  howToDeal: string[];
+  prevention: string[];
+  scienceSays: string[];
+  exercises?: WeeklyPlan[];
+}
+
 export type IFeelingResponse = Response<IFeeling[]>;
 
 export interface IFeelingById extends IFeeling {
-  data: any;
+  data?: any;
   goodToKnow: string;
   exercises: WeeklyPlan[];
   explanatoryVideo: string[];
