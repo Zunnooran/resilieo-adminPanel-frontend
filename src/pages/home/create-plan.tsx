@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Input, Modal, Row, Table } from 'antd';
+import { Button, Col, Divider, Form, Input, Modal, Row, Table } from 'antd';
+
+import ButtonUI from 'components/core-ui/button/button';
 
 import { IFeelingCreate } from './core/_models';
 import useCreateFeeling from './core/hooks/use-createFeeling';
@@ -83,6 +85,7 @@ function CreatePlan({ isCreateModal, setIsCreateModal }: IProps) {
           rules={[{ required: true, message: 'Please enter the activity!' }]}
         >
           <Input
+            className='py-2'
             value={text}
             onChange={(e) => {
               handleTableInputChange(record.key, 'activity', e.target.value);
@@ -97,11 +100,15 @@ function CreatePlan({ isCreateModal, setIsCreateModal }: IProps) {
       key: 'time',
       render: (text: any, record: any) => (
         <Form.Item
-          className='p-0 m-0'
+          className='p-0 py-1 m-0'
           name={`exercises[${record.key}].time`}
           rules={[{ required: true, message: 'Please enter the time!' }]}
         >
-          <Input value={text} onChange={(e) => handleTableInputChange(record.key, 'time', e.target.value)} />
+          <Input
+            value={text}
+            className='py-2'
+            onChange={(e) => handleTableInputChange(record.key, 'time', e.target.value)}
+          />
         </Form.Item>
       ),
     },
@@ -115,7 +122,11 @@ function CreatePlan({ isCreateModal, setIsCreateModal }: IProps) {
           name={`exercises[${record.key}].location`}
           rules={[{ required: true, message: 'Please enter the location!' }]}
         >
-          <Input value={text} onChange={(e) => handleTableInputChange(record.key, 'location', e.target.value)} />
+          <Input
+            className='py-2'
+            value={text}
+            onChange={(e) => handleTableInputChange(record.key, 'location', e.target.value)}
+          />
         </Form.Item>
       ),
     },
@@ -134,66 +145,70 @@ function CreatePlan({ isCreateModal, setIsCreateModal }: IProps) {
       scienceSays: values.scienceSays,
       exercises: exercisesWithoutKey,
     });
-    if (isSuccessCreateFeeling) setIsCreateModal(false);
+    if (isSuccessCreateFeeling) {
+      setIsCreateModal(false);
+      form.resetFields();
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsCreateModal(false);
+    form.resetFields();
   };
 
   return (
     <div>
       <Modal
-        title='Create Feeling'
+        title={<span style={{ fontSize: '1.5rem' }}>Create Feeling</span>}
         width={800}
         okButtonProps={{ className: 'bg-blue-600' }}
         open={isCreateModal}
-        onCancel={() => setIsCreateModal(false)}
+        onCancel={handleModalClose}
         footer={[
-          <Button key='cancel' onClick={() => setIsCreateModal(false)}>
+          <ButtonUI
+            className='border border-gray-400 hover:bg-gray-200 hover:border-gray-200 transition hover:scale-95 px-7 me-4'
+            variant='text'
+            key='cancel'
+            onClick={handleModalClose}
+          >
             Cancel
-          </Button>,
-          <Button key='submit' className='bg-blue-500 text-white hover:text-white' onClick={() => form.submit()}>
+          </ButtonUI>,
+          <ButtonUI
+            key='submit'
+            className='bg-blue-500 px-7 border border-blue-500 transition hover:scale-95 hover:bg-blue-600'
+            onClick={() => form.submit()}
+            onSubmit={handleModalClose}
+          >
             {isLoadingCreateFeeling ? 'loading' : 'Save'}
-          </Button>,
+          </ButtonUI>,
         ]}
       >
         <Form form={form} onFinish={onFinish} layout='vertical' initialValues={initialValues}>
-          <div className='flex sm:flex-row flex-col gap-3 '>
-            <Form.Item name='name' className='w-[100%]' rules={[{ required: true, message: 'Please enter the name!' }]}>
-              <Input placeholder='Feeling Name' />
+          <div className='flex sm:flex-row flex-col gap-3'>
+            <Form.Item name='name' className='w-full' rules={[{ required: true, message: 'Please enter the name!' }]}>
+              <Input className='py-2 ps-4' style={{ fontSize: '1rem' }} placeholder='Feeling Name' />
             </Form.Item>
             <Form.Item
               name='goodToKnow'
-              className='w-[100%]'
+              className='w-full'
               rules={[{ required: true, message: 'Please enter the Good To Know' }]}
             >
-              <Input placeholder='Good To Know' />
+              <Input className='py-2 ps-4' style={{ fontSize: '1rem' }} placeholder='Good To Know' />
             </Form.Item>
           </div>
-
+          <Divider className='m-0 mb-5 bg-gray-300 h-0.5' />
           <Row gutter={16}>
             <Col span={24}>
               <Row gutter={16}>
                 <Col span={24}>
                   <Form.List name='explanatoryVideo'>
                     {(fields, { add, remove }) => (
-                      <div className='flex flex-col '>
-                        {fields.map(({ key, name, ...restField }) => (
-                          <div className='flex'>
-                            <Form.Item
-                              className='w-[50%]'
-                              {...restField}
-                              name={name}
-                              rules={[{ required: true, message: 'Missing explanatoryVideo' }]}
-                            >
-                              <Input placeholder='Explanatory Video' />
-                            </Form.Item>
-                            {fields.length > 1 && (
-                              <MinusCircleOutlined className='mb-6 ml-3' onClick={() => remove(name)} />
-                            )}
-                          </div>
-                        ))}
-                        <Form.Item className='sm:absolute top-0 right-2'>
+                      <>
+                        <Form.Item>
                           <Button
                             type='dashed'
-                            style={{ width: '200px' }}
+                            className='py-5 flex items-center justify-center'
+                            style={{ width: '250px' }}
                             onClick={() => add()}
                             block
                             icon={<PlusOutlined />}
@@ -201,39 +216,45 @@ function CreatePlan({ isCreateModal, setIsCreateModal }: IProps) {
                             Add Explanatory Video
                           </Button>
                         </Form.Item>
-                      </div>
-                    )}
-                  </Form.List>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <Form.List name='signOf'>
-                    {(fields, { add, remove }) => (
-                      <div>
                         {fields.map(({ key, name, ...restField }) => (
-                          <div className='flex '>
+                          <div className='flex'>
                             <Form.Item
+                              className='w-full'
                               {...restField}
                               name={name}
-                              className='w-[50%]'
-                              rules={[{ required: true, message: 'Missing Signs' }]}
+                              rules={[{ required: true, message: 'Missing explanatoryVideo' }]}
                             >
-                              <Input placeholder='Add Signs' />
+                              <Input
+                                className='py-2 ps-4'
+                                style={{ fontSize: '1rem' }}
+                                placeholder='Explanatory Video'
+                              />
                             </Form.Item>
                             {fields.length > 1 && (
                               <MinusCircleOutlined className='mb-6 ml-3' onClick={() => remove(name)} />
                             )}
                           </div>
                         ))}
-                        <Form.Item className='sm:absolute top-0 right-2'>
+                      </>
+                    )}
+                  </Form.List>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Divider className='m-0 mb-5 bg-gray-300 h-0.5' />
+          <Row gutter={16}>
+            <Col span={24}>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.List name='signOf'>
+                    {(fields, { add, remove }) => (
+                      <>
+                        <Form.Item>
                           <Button
                             type='dashed'
-                            style={{ width: '200px' }}
+                            className='py-5 flex items-center justify-center'
+                            style={{ width: '250px' }}
                             onClick={() => add()}
                             block
                             icon={<PlusOutlined />}
@@ -241,39 +262,41 @@ function CreatePlan({ isCreateModal, setIsCreateModal }: IProps) {
                             Add Signs
                           </Button>
                         </Form.Item>
-                      </div>
-                    )}
-                  </Form.List>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <Form.List name='shadeOf'>
-                    {(fields, { add, remove }) => (
-                      <div>
                         {fields.map(({ key, name, ...restField }) => (
-                          <div className='flex'>
+                          <div className='flex '>
                             <Form.Item
-                              className='w-[50%]'
                               {...restField}
                               name={name}
-                              rules={[{ required: true, message: 'Missing Shades' }]}
+                              className='w-full'
+                              rules={[{ required: true, message: 'Missing Signs' }]}
                             >
-                              <Input placeholder='Add Shades' />
+                              <Input className='py-2 ps-4' style={{ fontSize: '1rem' }} placeholder='Add Signs' />
                             </Form.Item>
                             {fields.length > 1 && (
                               <MinusCircleOutlined className='mb-6 ml-3' onClick={() => remove(name)} />
                             )}
                           </div>
                         ))}
-                        <Form.Item className='sm:absolute top-0 right-2'>
+                      </>
+                    )}
+                  </Form.List>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Divider className='m-0 mb-5 bg-gray-300 h-0.5' />
+          <Row gutter={16}>
+            <Col span={24}>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.List name='shadeOf'>
+                    {(fields, { add, remove }) => (
+                      <>
+                        <Form.Item>
                           <Button
                             type='dashed'
-                            style={{ width: '200px' }}
+                            className='py-5 flex items-center justify-center'
+                            style={{ width: '250px' }}
                             onClick={() => add()}
                             block
                             icon={<PlusOutlined />}
@@ -281,39 +304,41 @@ function CreatePlan({ isCreateModal, setIsCreateModal }: IProps) {
                             Add Shades
                           </Button>
                         </Form.Item>
-                      </div>
-                    )}
-                  </Form.List>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <Form.List name='howToDeal'>
-                    {(fields, { add, remove }) => (
-                      <div>
                         {fields.map(({ key, name, ...restField }) => (
                           <div className='flex'>
                             <Form.Item
+                              className='w-full'
                               {...restField}
                               name={name}
-                              className='w-[50%]'
-                              rules={[{ required: true, message: 'Missing How To Deal' }]}
+                              rules={[{ required: true, message: 'Missing Shades' }]}
                             >
-                              <Input placeholder='Add How to Deal' />
+                              <Input className='py-2 ps-4' style={{ fontSize: '1rem' }} placeholder='Add Shades' />
                             </Form.Item>
                             {fields.length > 1 && (
                               <MinusCircleOutlined className='mb-6 ml-3' onClick={() => remove(name)} />
                             )}
                           </div>
                         ))}
-                        <Form.Item className='sm:absolute top-0 right-2'>
+                      </>
+                    )}
+                  </Form.List>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Divider className='m-0 mb-5 bg-gray-300 h-0.5' />
+          <Row gutter={16}>
+            <Col span={24}>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.List name='howToDeal'>
+                    {(fields, { add, remove }) => (
+                      <>
+                        <Form.Item>
                           <Button
                             type='dashed'
-                            style={{ width: '200px' }}
+                            className='py-5 flex items-center justify-center'
+                            style={{ width: '250px' }}
                             onClick={() => add()}
                             block
                             icon={<PlusOutlined />}
@@ -321,39 +346,41 @@ function CreatePlan({ isCreateModal, setIsCreateModal }: IProps) {
                             Add How To Deal
                           </Button>
                         </Form.Item>
-                      </div>
-                    )}
-                  </Form.List>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Row gutter={16}>
-                <Col span={24}>
-                  <Form.List name='prevention'>
-                    {(fields, { add, remove }) => (
-                      <div>
                         {fields.map(({ key, name, ...restField }) => (
                           <div className='flex'>
                             <Form.Item
                               {...restField}
                               name={name}
-                              className='w-[50%]'
-                              rules={[{ required: true, message: 'Missing Signs' }]}
+                              className='w-full'
+                              rules={[{ required: true, message: 'Missing How To Deal' }]}
                             >
-                              <Input placeholder='Add Prevention' />
+                              <Input className='py-2 ps-4' style={{ fontSize: '1rem' }} placeholder='Add How to Deal' />
                             </Form.Item>
                             {fields.length > 1 && (
                               <MinusCircleOutlined className='mb-6 ml-3' onClick={() => remove(name)} />
                             )}
                           </div>
                         ))}
-                        <Form.Item className='sm:absolute top-0 right-2 '>
+                      </>
+                    )}
+                  </Form.List>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Divider className='m-0 mb-5 bg-gray-300 h-0.5' />
+          <Row gutter={16}>
+            <Col span={24}>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.List name='prevention'>
+                    {(fields, { add, remove }) => (
+                      <>
+                        <Form.Item>
                           <Button
                             type='dashed'
-                            style={{ width: '200px' }}
+                            className='py-5 flex items-center justify-center'
+                            style={{ width: '250px' }}
                             onClick={() => add()}
                             block
                             icon={<PlusOutlined />}
@@ -361,19 +388,76 @@ function CreatePlan({ isCreateModal, setIsCreateModal }: IProps) {
                             Add prevention
                           </Button>
                         </Form.Item>
-                      </div>
+                        {fields.map(({ key, name, ...restField }) => (
+                          <div className='flex'>
+                            <Form.Item
+                              {...restField}
+                              name={name}
+                              className='w-full'
+                              rules={[{ required: true, message: 'Missing Signs' }]}
+                            >
+                              <Input className='py-2 ps-4' style={{ fontSize: '1rem' }} placeholder='Add Prevention' />
+                            </Form.Item>
+                            {fields.length > 1 && (
+                              <MinusCircleOutlined className='mb-6 ml-3' onClick={() => remove(name)} />
+                            )}
+                          </div>
+                        ))}
+                      </>
                     )}
                   </Form.List>
                 </Col>
               </Row>
             </Col>
           </Row>
+          <Divider className='m-0 mb-5 bg-gray-300 h-0.5' />
+          <Row gutter={16}>
+            <Col span={24}>
+              <Row gutter={16}>
+                <Col span={24}>
+                  <Form.List name='scienceSays'>
+                    {(fields, { add, remove }) => (
+                      <>
+                        <Form.Item>
+                          <Button
+                            type='dashed'
+                            className='py-5 flex items-center justify-center'
+                            style={{ width: '250px' }}
+                            onClick={() => add()}
+                            block
+                            icon={<PlusOutlined />}
+                          >
+                            Add Science Says
+                          </Button>
+                        </Form.Item>
+                        {fields.map(({ key, name, ...restField }) => (
+                          <div className='flex'>
+                            <Form.Item
+                              {...restField}
+                              name={name}
+                              className='w-full'
+                              rules={[{ required: true, message: 'Missing Science Says' }]}
+                            >
+                              <Input
+                                className='py-2 ps-4'
+                                style={{ fontSize: '1rem' }}
+                                placeholder='Add Science Says'
+                              />
+                            </Form.Item>
+                            {fields.length > 1 && (
+                              <MinusCircleOutlined className='mb-6 ml-3' onClick={() => remove(name)} />
+                            )}
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </Form.List>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Divider className='m-0 mb-5 bg-gray-300 h-0.5' />
           <Table dataSource={getTableData()} columns={columns} pagination={false} size='middle' className='mb-4' />
-          {/* <Form.Item className='sm:absolute top-0 right-2'>
-            <Button type='dashed' style={{ width: '200px' }} onClick={handleAddRow} block icon={<PlusOutlined />}>
-              Add Exercise
-            </Button>
-          </Form.Item> */}
         </Form>
       </Modal>
     </div>

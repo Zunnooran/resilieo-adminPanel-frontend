@@ -36,7 +36,10 @@ function Home() {
     >
       <div className='flex justify-between pb-4 items-center'>
         <h1 className='font-bold antialiased text-xl tracking-wide'>Feelings</h1>
-        <Button className='p-3 gap-1' onClick={() => setIsCreateModal(true)}>
+        <Button
+          className='gap-1 py-3 transition hover:bg-blue-600 hover:scale-95'
+          onClick={() => setIsCreateModal(true)}
+        >
           <PlusOutlined />
           Add Feeling
         </Button>

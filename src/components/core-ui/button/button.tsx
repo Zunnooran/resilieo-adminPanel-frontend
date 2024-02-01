@@ -14,7 +14,7 @@ function Button({ variant = 'primary', suffixElement, prefixElement, className, 
   return (
     <button
       type='button'
-      className={twc('inline-flex items-center gap-6 rounded-md', classNames[variant], className)}
+      className={twc('inline-flex items-center gap-6 rounded-md py-2 px-3', classNames[variant], className)}
       {...rest}
     >
       {prefixElement}
