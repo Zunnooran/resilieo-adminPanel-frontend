@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { LogoutOutlined } from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 
 import Guidance from 'assets/icons/guid-icon.svg?react';
 import Mental from 'assets/icons/mental-icon.svg?react';
+import Resilioo from 'assets/icons/resilioo.svg?react';
+import SignOut from 'assets/icons/sign-out-icon.svg?react';
 import Test from 'assets/icons/test-icon.svg?react';
 
 interface Props {
@@ -32,7 +33,7 @@ const items: MenuProps['items'] = [
   {
     key: 'logout',
     label: 'Logout',
-    icon: <LogoutOutlined className='flex justify-center w-6' />,
+    icon: <SignOut className='mx-auto w-6' />,
   },
 ];
 
@@ -60,9 +61,9 @@ function Sidebar({ collapsed, setCollapsed }: Props) {
       width={250}
       className='fixed h-lvh'
     >
-      <div className='p-5'>
+      <div className='py-10'>
         {' '}
-        <h1 className='flex text-white justify-center md:text-xl sm:text-base font-bold'>Resilio</h1>
+        <Resilioo className=' mx-auto' />
       </div>
       <Menu
         theme='dark'
