@@ -51,6 +51,7 @@ export default {
         primary: '0px 0px 15px var(--color-primary)',
       },
       spacing: {
+        0.25: '1px',
         15: '3.75rem',
         18: '4.5rem',
         30: '7.5rem',
