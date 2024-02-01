@@ -44,7 +44,7 @@ function Home() {
           Add Feeling
         </Button>
       </div>
-      {feelings && <CreateTable data={feelings} isActions isView />}
+      {feelings && <CreateTable data={feelings} isActions isView isEditableIcon isDelete />}
       <CreatePlan isCreateModal={isCreateModal} setIsCreateModal={setIsCreateModal} />
     </Content>
   );
