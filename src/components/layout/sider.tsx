@@ -42,8 +42,8 @@ function Sidebar({ collapsed, setCollapsed }: Props) {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (pathname.slice('/'.length)) setCurrent(pathname.slice('/'.length));
-    setCurrent('guidance');
+    if (pathname.slice('/'.length)) return setCurrent(pathname.slice('/'.length));
+    return setCurrent('guidance');
   }, [pathname]);
 
   const onClick = (e: any) => {
@@ -58,7 +58,7 @@ function Sidebar({ collapsed, setCollapsed }: Props) {
       onCollapse={(value) => setCollapsed(value)}
       breakpoint='sm'
       width={250}
-      className='fixed h-lvh'
+      className='fixed sm:h-lvh'
     >
       <div className='p-5'>
         {' '}

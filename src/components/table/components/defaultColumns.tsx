@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react';
+/* eslint-disable no-underscore-dangle */
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
@@ -13,9 +14,50 @@ interface DataType {
   day?: Days | any;
 }
 
-export default function useCreateColumns(data: any, isActions: boolean, isView: boolean) {
+export default function useCreateColumns(
+  data: any,
+  isActions: boolean,
+  isView: boolean,
+  setDeleteId: any,
+  setEditId: any,
+  setViewId: any,
+  isEditable: boolean,
+  isEditableIcon: boolean,
+  isDelete: boolean,
+  handelUpdate: (data: any) => void
+) {
   const [dataSource, setDataSource] = useState<DataType[]>([]);
 
+  useEffect(() => {
+    if (data) {
+      setDataSource(() =>
+        data.map(({ _id, ...rest }: any) => ({
+          key: _id ?? 0,
+          ...rest,
+        }))
+      );
+    }
+  }, [data]);
+
+  const handelView = useCallback(
+    (record: Partial<any> & { key: React.Key }) => {
+      setViewId(record?._id);
+    },
+    [setViewId]
+  );
+  const handelEdit = useCallback(
+    (record: Partial<any> & { key: React.Key }) => {
+      setEditId(record?._id);
+    },
+    [setEditId]
+  );
+
+  const handelDelete = useCallback(
+    (record: Partial<any> & { key: React.Key }) => {
+      setDeleteId(record?._id);
+    },
+    [setDeleteId]
+  );
   const defaultColumns: (ColumnTypes[number] & { editable?: boolean; dataIndex: string })[] = useMemo(() => {
     const actionColumn: (ColumnTypes[number] & { editable?: boolean; dataIndex: string })[] = [
       {
@@ -24,15 +66,15 @@ export default function useCreateColumns(data: any, isActions: boolean, isView: 
         dataIndex: 'action',
         width: '25%',
         editable: false,
-        // render: (_: any, record: any) => (
-        render: () => (
-          <Space size='middle'>
-            {/* {console.log(record)} */}
-            {isView && <EyeOutlined />}
-            <EditOutlined />
-            <DeleteOutlined className='text-red-500' />
-          </Space>
-        ),
+        render: (_: any, record: any) => {
+          return (
+            <Space size='middle'>
+              {isView && <EyeOutlined onClick={() => handelView(record)} />}
+              {isEditableIcon && <EditOutlined onClick={() => handelEdit(record)} />}
+              {isDelete && <DeleteOutlined className='text-red-500' onClick={() => handelDelete(record)} />}
+            </Space>
+          );
+        },
       },
     ];
     const columnsData = Object.keys(data[0]) ?? [];
@@ -44,7 +86,7 @@ export default function useCreateColumns(data: any, isActions: boolean, isView: 
           title: c.charAt(0).toUpperCase() + c.slice(1),
           dataIndex: c,
           width: '25%',
-          editable: false,
+          editable: isEditable,
         }));
 
       if (isActions) return [...columns, ...actionColumn];
@@ -52,16 +94,16 @@ export default function useCreateColumns(data: any, isActions: boolean, isView: 
     }
 
     return [];
-  }, [data, isActions, isView]);
+  }, [data, isActions, isView, isEditable, isDelete, isEditableIcon, handelEdit, handelDelete, handelView]);
 
   const handleSave = (row: DataType) => {
     const newData = [...dataSource];
 
     const index = newData.findIndex((item) => row.key === item.key);
 
-    if (index) newData[index] = { ...newData[index], ...row };
-
+    if (index >= 0) newData[index] = { ...newData[index], ...row };
     setDataSource(newData);
+    handelUpdate(newData);
   };
 
   const components = {
@@ -94,5 +136,5 @@ export default function useCreateColumns(data: any, isActions: boolean, isView: 
     };
   });
 
-  return { columns, components };
+  return { columns, components, dataSource };
 }
