@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
@@ -47,7 +46,7 @@ export default function useCreateColumns(
 
   const handelView = useCallback(
     (record: Partial<any> & { key: React.Key }) => {
-      setViewId(record?._id);
+      setViewId(record);
     },
     [setViewId]
   );
@@ -60,7 +59,7 @@ export default function useCreateColumns(
 
   const handelDelete = useCallback(
     (record: Partial<any> & { key: React.Key }) => {
-      setDeleteId(record?._id);
+      setDeleteId(record);
     },
     [setDeleteId]
   );
@@ -91,7 +90,7 @@ export default function useCreateColumns(
         .map((c) => ({
           title: c.charAt(0).toUpperCase() + c.slice(1),
           dataIndex: c,
-          width: '25%',
+          width: c === 'number' ? '5%' : '25%',
           editable: isEditable,
         }));
 
