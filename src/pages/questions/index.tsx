@@ -17,10 +17,11 @@ function PersonalityTest() {
   } = theme.useToken();
   const { questionsData, isLoadingQuestions } = useQuestions();
   const [filteredData, setFilteredData] = useState<IFilterData[]>();
-  const [editId, setEditId] = useState<Partial<any>>();
+  // const [editId, setEditId] = useState<Partial<any>>();
+  const [setEditId] = useState<Partial<any>>();
   // console.log(questionsData?.data[0]?.answer?.template[0].option);
   // console.log(questionsData?.data[0]?.answer?.template[0].points);
-  console.log(questionsData);
+  // console.log(questionsData);
 
   useEffect(() => {
     if (questionsData && questionsData?.data)

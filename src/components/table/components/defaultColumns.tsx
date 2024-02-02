@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
