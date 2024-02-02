@@ -19,6 +19,11 @@ function Home() {
 
   const { feelings } = useFeelings();
   const [isCreateModal, setIsCreateModal] = useState(false);
+  // const [editId, setEditId] = useState<Partial<any>>();
+  // const [deleteId, setDeleteId] = useState<Partial<any>>();
+  // const [viewId, setViewId] = useState<Partial<any>>();
+
+  // console.log(editId);
 
   // const navigateToFeel = (id: string) => {
   //   navigate(`/guidance/feel/${id}`);
@@ -44,6 +49,7 @@ function Home() {
           Add Feeling
         </Button>
       </div>
+      {/* {feelings && <CreateTable data={feelings} setEditId={setEditId} isActions isView isEditableIcon isDelete />} */}
       {feelings && <CreateTable data={feelings} isActions isView isEditableIcon isDelete />}
       <CreatePlan isCreateModal={isCreateModal} setIsCreateModal={setIsCreateModal} />
     </Content>
