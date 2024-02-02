@@ -12,7 +12,7 @@ function useUpdateMasterPlan() {
   const { mutate, isLoading, isError, isSuccess } = useMutation(
     (body: any) => {
       const { id, plans } = body;
-      return updateMasterPlan(plans, id ?? '');
+      return updateMasterPlan({ plans }, id ?? '');
     },
     {
       // ✅ Show success message

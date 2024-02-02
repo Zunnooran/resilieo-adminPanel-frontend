@@ -9,9 +9,10 @@ function CreateTable({
   data,
   isActions = false,
   isView = false,
-  isEditable = false,
   isDelete = false,
   isEditableIcon = false,
+  isPagination = false,
+  isEditable = false,
   setEditId,
   setDeleteId,
   setViewId,
@@ -27,9 +28,9 @@ function CreateTable({
     handelUpdate
   );
   useEffect(() => {
-    if (editId) setEditId(editId);
-    if (deleteId) setDeleteId(deleteId);
-    if (viewId) setViewId(viewId);
+    if (editId && setEditId) setEditId(editId);
+    if (deleteId && setDeleteId) setDeleteId(deleteId);
+    if (viewId && setViewId) setViewId(viewId);
     clear();
   }, [deleteId, editId, viewId, setEditId, setViewId, setDeleteId, clear]);
 
@@ -37,7 +38,7 @@ function CreateTable({
     <Table
       style={{ width: '100%' }}
       scroll={{ x: 360 }}
-      pagination={false}
+      pagination={isPagination}
       components={components}
       rowClassName='editable-row'
       columns={columns as ColumnTypes}
