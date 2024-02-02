@@ -18,15 +18,15 @@ export default function useCreateColumns(
   data: any,
   isActions: boolean,
   isView: boolean,
-  setDeleteId: any,
-  setEditId: any,
-  setViewId: any,
   isEditable: boolean,
   isEditableIcon: boolean,
   isDelete: boolean,
   handelUpdate: (data: any) => void
 ) {
   const [dataSource, setDataSource] = useState<DataType[]>([]);
+  const [editId, setEditId] = useState<Partial<any>>();
+  const [deleteId, setDeleteId] = useState<Partial<any>>();
+  const [viewId, setViewId] = useState<Partial<any>>();
 
   useEffect(() => {
     if (data) {
@@ -39,6 +39,12 @@ export default function useCreateColumns(
     }
   }, [data]);
 
+  const clear = () => {
+    setDeleteId(undefined);
+    setEditId(undefined);
+    setViewId(undefined);
+  };
+
   const handelView = useCallback(
     (record: Partial<any> & { key: React.Key }) => {
       setViewId(record?._id);
@@ -47,7 +53,7 @@ export default function useCreateColumns(
   );
   const handelEdit = useCallback(
     (record: Partial<any> & { key: React.Key }) => {
-      setEditId(record?._id);
+      setEditId(record);
     },
     [setEditId]
   );
@@ -136,5 +142,5 @@ export default function useCreateColumns(
     };
   });
 
-  return { columns, components, dataSource };
+  return { columns, components, dataSource, deleteId, editId, viewId, clear };
 }
